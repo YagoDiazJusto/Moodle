@@ -1,0 +1,22 @@
+version: "3"
+   
+services:
+  web:
+    build: apache
+    ports:
+      - 80:80
+      - 443:443
+    volumes:
+      - ./app:/app
+      - ./apache/apache.lan.conf:/etc/apache2/sites-enabled/apache.lan.conf
+      - ./apache/certificados:/certificados
+  basedatos:
+    image: mysql:8.3
+    env_file:
+      - .env_bd
+    volumes:
+      - ./bd/backup.sql:/docker-entrypoint-initdb.d/backup.sh
+      - datos:/var/lib/mysql
+      - ./bd:bd
+volumes:
+   datos:
